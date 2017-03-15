@@ -60,6 +60,11 @@ IF DEFINED CLEAN_LOCAL_DEPLOYMENT_TEMP (
 IF DEFINED MSBUILD_PATH goto MsbuildPathDefined
 SET MSBUILD_PATH=%ProgramFiles(x86)%\MSBuild\14.0\Bin\MSBuild.exe
 :MsbuildPathDefined
+
+curl -sSL https://go.microsoft.com/fwlink/?linkid=843454 -o "%DEPLOYMENT_TEMP%/dotnet.zip"
+mkdir "%DEPLOYMENT_TEMP%\dotnet"
+unzip "%DEPLOYMENT_TEMP%\dotnet.zip" -d "%DEPLOYMENT_TEMP%\dotnet"
+
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: Deployment
 :: ----------
@@ -67,11 +72,11 @@ SET MSBUILD_PATH=%ProgramFiles(x86)%\MSBuild\14.0\Bin\MSBuild.exe
 echo Handling ASP.NET Core Web Application deployment.
 
 :: 1. Restore nuget packages
-call :ExecuteCmd nuget.exe restore -packagesavemode nuspec
+call :ExecuteCmd  "%DEPLOYMENT_TEMP%\dotnet\dotnet.exe" restore
 IF !ERRORLEVEL! NEQ 0 goto error
 
 :: 2. Build and publish
-call :ExecuteCmd dotnet publish "dotnet-core-empty\dotnet-core-empty.csproj" --output "%DEPLOYMENT_TEMP%" --configuration Release
+call :ExecuteCmd "%DEPLOYMENT_TEMP%\dotnet\dotnet.exe" "dotnet-core-empty\dotnet-core-empty.csproj" --output "%DEPLOYMENT_TEMP%" --configuration Release
 IF !ERRORLEVEL! NEQ 0 goto error
 
 :: 3. KuduSync
