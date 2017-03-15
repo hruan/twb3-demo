@@ -8,7 +8,7 @@ namespace dotnet_core_empty.Controllers
         [HttpGet("")]
         public string Get()
         {
-            return "Hello world!";
+            return "Hello TWB!";
         }
     }
 }
