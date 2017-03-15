@@ -76,7 +76,7 @@ call :ExecuteCmd  "%DEPLOYMENT_TEMP%\dotnet\dotnet.exe" restore
 IF !ERRORLEVEL! NEQ 0 goto error
 
 :: 2. Build and publish
-call :ExecuteCmd "%DEPLOYMENT_TEMP%\dotnet\dotnet.exe" "dotnet-core-empty\dotnet-core-empty.csproj" --output "%DEPLOYMENT_TEMP%" --configuration Release
+call :ExecuteCmd "%DEPLOYMENT_TEMP%\dotnet\dotnet.exe" publish "dotnet-core-empty\dotnet-core-empty.csproj" --output "%DEPLOYMENT_TEMP%" --configuration Release
 IF !ERRORLEVEL! NEQ 0 goto error
 
 :: 3. KuduSync
